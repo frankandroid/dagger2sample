@@ -1,7 +1,5 @@
 package com.hhly.dagger2sample.bean;
 
-import javax.inject.Inject;
-
 /**
  * @创建者 frank
  * @时间 2017/1/22 11:50
@@ -12,7 +10,18 @@ public class FirstStudent {
 
     public int age = 10;
 
-    @Inject
-    public FirstStudent() {
+    public FirstStudent(){
+
+    }
+
+    public FirstStudent(int age) {
+        this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return "FirstStudent{" +
+                "age=" + age +
+                '}';
     }
 }

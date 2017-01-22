@@ -4,4 +4,7 @@
         欢迎访问博客：www.chenguozhu.com
     </string>
     <string name="action_settings">Settings</string>
+
+    <string name="inject_first_student">inject_first_student</string>
+    <string name="inject_with_module">inject_with_module</string>
 </resources>
