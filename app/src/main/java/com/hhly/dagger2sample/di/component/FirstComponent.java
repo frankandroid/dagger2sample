@@ -16,6 +16,6 @@ public interface FirstComponent {
      * 报错。
      */
 
-   /* void injectScrollingActivity(ScrollingActivity activity);*/
+   /* void injectActivity(MainActivity activity);*/
 
 }

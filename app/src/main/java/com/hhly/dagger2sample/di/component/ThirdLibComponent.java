@@ -1,6 +1,5 @@
 package com.hhly.dagger2sample.di.component;
 
-import com.hhly.dagger2sample.ScrollingActivity;
 import com.hhly.dagger2sample.di.module.FirstModule;
 import com.hhly.dagger2sample.di.module.ThirdLibModule;
 
@@ -15,6 +14,6 @@ import dagger.Component;
 @Component(modules = {ThirdLibModule.class, FirstModule.class})
 public interface ThirdLibComponent {
 
-    void injectScrollingActivity(ScrollingActivity activity);
+    //void injectScrollingActivity(MainActivity activity);
 
 }

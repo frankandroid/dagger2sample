@@ -8,10 +8,11 @@ package com.hhly.dagger2sample.bean;
 
 public class FirstStudent {
 
-    public int age = 10;
+    public int age;
+    public String name;
 
-    public FirstStudent(){
-
+    public FirstStudent(String name) {
+        this.name = name;
     }
 
     public FirstStudent(int age) {
@@ -22,6 +23,7 @@ public class FirstStudent {
     public String toString() {
         return "FirstStudent{" +
                 "age=" + age +
+                ", name='" + name + '\'' +
                 '}';
     }
 }

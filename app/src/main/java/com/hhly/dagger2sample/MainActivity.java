@@ -3,7 +3,6 @@ package com.hhly.dagger2sample;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,18 +10,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
+import com.hhly.dagger2sample.base.BaseActivity;
 import com.hhly.dagger2sample.bean.FirstStudent;
 import com.hhly.dagger2sample.bean.GsonTestStudent;
-import com.hhly.dagger2sample.di.component.DaggerThirdLibComponent;
+import com.hhly.dagger2sample.di.component.DaggerMainComponent;
 import com.hhly.dagger2sample.di.component.FirstComponent;
+import com.hhly.dagger2sample.di.component.MainComponent;
 import com.hhly.dagger2sample.di.component.ThirdLibComponent;
-import com.hhly.dagger2sample.di.module.ThirdLibModule;
+import com.hhly.dagger2sample.di.module.ActivityModule;
+import com.hhly.dagger2sample.di.module.MainModule;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
-public class ScrollingActivity extends AppCompatActivity implements View.OnClickListener {
-
+public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private String mStudentJson = "{\n" +
             "    \"name\": \"Jack\",\n" +
@@ -31,14 +32,19 @@ public class ScrollingActivity extends AppCompatActivity implements View.OnClick
             "}";
 
     @Inject
+    @Named("namedStudent")
     FirstStudent mFirstStudent;
+
     @Inject
-    Gson mGson;
+    @Named("agedStudent")
+    FirstStudent mFirstAgeStudent;
 
     private FirstComponent mFirstComponent;
     private ThirdLibComponent mThirdLibComponent;
     private TextView mShowContent;
     private GsonTestStudent mGsonTestStudent;
+
+    private MainComponent mMainComponent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,13 +58,20 @@ public class ScrollingActivity extends AppCompatActivity implements View.OnClick
         mFirstComponent.injectScrollingActivity(this);*/
 
         //使用module方式提供实例
-        mThirdLibComponent = DaggerThirdLibComponent.builder()
+        /*mThirdLibComponent = DaggerThirdLibComponent.builder()
                 .thirdLibModule(new ThirdLibModule())
                 .build();
+        mThirdLibComponent.injectScrollingActivity(this);*/
 
-        mThirdLibComponent.injectScrollingActivity(this);
+        mMainComponent = DaggerMainComponent.builder()
+                .mainModule(new MainModule())
+                .activityModule(new ActivityModule())
+                .appComponent(((App) getApplication()).getAppComponent())
+                .build();
 
-         mGsonTestStudent = mGson.fromJson(mStudentJson, GsonTestStudent.class);
+        mMainComponent.injectActivity(this);
+
+        mGsonTestStudent = mGson.fromJson(mStudentJson, GsonTestStudent.class);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(this);
@@ -70,7 +83,6 @@ public class ScrollingActivity extends AppCompatActivity implements View.OnClick
         injectModule.setOnClickListener(this);
 
         mShowContent = (TextView) findViewById(R.id.show_content);
-
 
     }
 
@@ -106,8 +118,15 @@ public class ScrollingActivity extends AppCompatActivity implements View.OnClick
                 mShowContent.setText("");
                 break;
             case R.id.inject_with_module:
-                mShowContent.setText(mGsonTestStudent.toString()+"///"+mFirstStudent.toString());
+                mShowContent.setText(mGsonTestStudent.toString() + "---"
+                        + mFirstStudent.toString()
+                        + "---" + mFirstAgeStudent.toString());
                 break;
         }
+    }
+
+
+    public MainComponent getMainComponent() {
+        return mMainComponent;
     }
 }
